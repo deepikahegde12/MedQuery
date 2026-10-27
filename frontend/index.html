@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MedQuery</title>
+  <meta name="description" content="MedQuery: an intelligent medical question answering system using BERT and knowledge retrieval." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M13 8h6v5h5v6h-5v5h-6v-5H8v-6h5z' fill='white'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#ask">Skip to question</a>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top" aria-label="MedQuery home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M9.5 3h5v6.5H21v5h-6.5V21h-5v-6.5H3v-5h6.5z"/></svg>
+        </span>
+        <span class="brand-name">Med<span>Query</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#ask">Ask</a>
+        <a href="#how">How it works</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <div class="status-pill" id="systemStatus" role="status" aria-live="polite">
+          <span class="dot"></span><span class="status-text">Checking system…</span>
+        </div>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow">BERT · Knowledge Retrieval · Evidence-grounded answers</p>
+        <h1>Ask medical questions.<br /><span class="accent">Get answers you can trace.</span></h1>
+        <p class="lede">
+          MedQuery understands your question with a pretrained BERT model, retrieves passages
+          from a connected medical knowledge base, and extracts an answer only when the evidence supports it.
+        </p>
+        <div class="hero-badges">
+          <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5z"/></svg>Never invents citations</span>
+          <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Shows supporting evidence</span>
+          <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>Flags uncertainty</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace container" id="ask" aria-label="Ask MedQuery">
+      <div class="main-col">
+        <form class="card ask-card" id="askForm" novalidate>
+          <label for="question" class="ask-label">Your medical question</label>
+          <div class="textarea-wrap">
+            <textarea id="question" name="question" rows="3" maxlength="500" required
+              placeholder="e.g. What are the common symptoms of [condition]?"
+              aria-describedby="questionHelp questionError"></textarea>
+          </div>
+          <div class="ask-meta">
+            <span id="questionHelp" class="hint">Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to submit</span>
+            <span id="charCount" class="hint" aria-live="polite">0 / 500</span>
+          </div>
+          <p id="questionError" class="field-error" role="alert" hidden></p>
+
+          <div class="templates" aria-label="Question templates">
+            <span class="templates-label">Templates</span>
+            <div class="chips" id="templates"></div>
+          </div>
+
+          <div class="ask-actions">
+            <button type="button" class="btn btn-ghost" id="clearBtn">Clear</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-label">Ask MedQuery</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </form>
+
+        <div id="results" class="results" aria-live="polite" aria-busy="false">
+          <div class="empty-state card" id="emptyState">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="13"/><path d="m31 31 10 10M21 15v12M15 21h12"/></svg>
+            <h2>Ready when you are</h2>
+            <p>Ask a question to see how MedQuery processes it, what evidence it retrieves, and the answer it can support.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-col" aria-label="Query history">
+        <div class="card history-card">
+          <div class="history-head">
+            <h2>Recent questions</h2>
+            <button class="link-btn" id="clearHistory" type="button">Clear</button>
+          </div>
+          <ul class="history-list" id="historyList"><li class="history-empty">No questions yet.</li></ul>
+        </div>
+        <div class="card disclaimer-card">
+          <h2><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>Educational use only</h2>
+          <p>MedQuery is a student research prototype. It does not diagnose, treat, or prescribe. Always consult a qualified healthcare professional.</p>
+          <p class="emergency">In an emergency, call your local emergency number.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="how" id="how">
+      <div class="container">
+        <h2 class="section-title">How MedQuery works</h2>
+        <p class="section-sub">Four separate stages. If any stage cannot support an answer, MedQuery says so instead of guessing.</p>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">1</span>
+            <h3>Preprocess</h3>
+            <p>Unicode and whitespace normalisation, contraction expansion, keyword extraction, question-type detection and safety checks.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <h3>Understand with BERT</h3>
+            <p>A pretrained BERT encoder tokenises the question into WordPieces and produces a contextual embedding for semantic search.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <h3>Retrieve evidence</h3>
+            <p>A pluggable adapter queries the connected medical knowledge base and returns ranked passages with source references.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">4</span>
+            <h3>Extract the answer</h3>
+            <p>A BERT reading-comprehension model selects an answer span from the evidence, with a confidence score.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="about container" id="about">
+      <div class="card about-card">
+        <div>
+          <h2 class="section-title">About this project</h2>
+          <p><strong>MedQuery: An Intelligent Medical Question Answering System Using BERT and Knowledge Retrieval</strong> is a college mini-project. BERT is used to represent the meaning of questions and to locate answer spans in retrieved text. BERT is not a source of medical knowledge; every answer must come from the connected knowledge base.</p>
+        </div>
+        <dl class="sys-info" id="sysInfo">
+          <div><dt>Query encoder</dt><dd>—</dd></div>
+          <div><dt>Knowledge base</dt><dd>—</dd></div>
+          <div><dt>Answer model</dt><dd>—</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© MedQuery · Educational prototype, not a medical device</span>
+      <a href="/api/docs">API docs</a>
+    </div>
+  </footer>
+
+  <template id="resultTemplate">
+    <article class="card result-card">
+      <header class="result-head">
+        <div class="status-banner"></div>
+        <p class="result-question"></p>
+      </header>
+      <div class="notices"></div>
+      <section class="answer-block" hidden>
+        <h3 class="block-title">Answer <span class="from-evidence">extracted from evidence</span></h3>
+        <blockquote class="answer-text"></blockquote>
+        <div class="confidence">
+          <span class="confidence-label"></span>
+          <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+        </div>
+      </section>
+      <section class="evidence-block" hidden>
+        <h3 class="block-title">Supporting evidence</h3>
+        <ol class="evidence-list"></ol>
+      </section>
+      <section class="sources-block" hidden>
+        <h3 class="block-title">Sources</h3>
+        <ul class="sources-list"></ul>
+      </section>
+      <details class="analysis">
+        <summary>Query analysis</summary>
+        <div class="analysis-grid"></div>
+      </details>
+      <footer class="result-foot">
+        <span class="timing"></span>
+        <span class="disclaimer-inline"></span>
+      </footer>
+    </article>
+  </template>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

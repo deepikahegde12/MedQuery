@@ -1,0 +1,5 @@
+# BERT models (optional - the app runs in a degraded, keyword-only mode without them).
+# CPU-only PyTorch keeps the download small:
+#   pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1
+transformers==4.46.3
