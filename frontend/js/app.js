@@ -18,19 +18,7 @@ const TEMPLATES = [
   "What causes [condition]?",
   "How is [condition] diagnosed?",
   "What are the treatment options for [condition]?",
-  "How can [condition] be prevented?",
-  "What is the difference between [term A] and [term B]?",
 ];
-
-const ICONS = {
-  check: '<path d="m5 12 5 5 9-10"/>',
-  alert: '<path d="M12 3 2 20h20zM12 10v4M12 17h.01"/>',
-  book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 5v16"/>',
-  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
-  plug: '<path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0zM12 18v4"/>',
-  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
-};
-const icon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] ?? ICONS.info}</svg>`;
 
 const $ = (sel) => document.querySelector(sel);
 const els = {
@@ -111,41 +99,24 @@ function setBusy(state) {
   busy = state;
   els.submit.disabled = state;
   els.submit.classList.toggle("loading", state);
-  els.submit.querySelector(".btn-label").textContent = state ? "Analysing…" : "Ask MedQuery";
+  els.submit.querySelector(".btn-label").textContent = state ? "Asking…" : "Ask";
   els.results.setAttribute("aria-busy", String(state));
 }
 
 function renderLoading(question) {
   els.results.innerHTML = `
-    <div class="card loading-card">
+    <div class="loading-card">
       <p class="result-question">${escapeHtml(question)}</p>
-      <ol class="progress-steps">
-        <li class="active">Preprocessing question</li>
-        <li>Encoding with BERT</li>
-        <li>Retrieving evidence</li>
-        <li>Extracting answer</li>
-      </ol>
-      <p class="hint">The first query can take longer while models load.</p>
+      <p class="loading">Searching the knowledge base</p>
     </div>`;
-  const items = [...els.results.querySelectorAll(".progress-steps li")];
-  let i = 0;
-  const timer = setInterval(() => {
-    if (!els.results.contains(items[0])) return clearInterval(timer);
-    items[i]?.classList.replace("active", "done");
-    i = Math.min(i + 1, items.length - 1);
-    items[i]?.classList.add("active");
-  }, 900);
 }
 
 function renderError(message, question) {
   els.results.innerHTML = `
-    <div class="card error-card" role="alert">
-      ${icon("alert")}
-      <div>
-        <h2>Something went wrong</h2>
-        <p>${escapeHtml(message)}</p>
-        <button type="button" class="btn btn-secondary" id="retryBtn">Retry</button>
-      </div>
+    <div class="error-card" role="alert">
+      <h2>Something went wrong</h2>
+      <p>${escapeHtml(message)}</p>
+      <button type="button" class="btn btn-secondary" id="retryBtn">Retry</button>
     </div>`;
   $("#retryBtn").addEventListener("click", () => ask(question));
 }
@@ -179,11 +150,11 @@ function renderResult(r) {
 
   const banner = node.querySelector(".status-banner");
   banner.className = `status-banner tone-${meta.tone}`;
-  banner.innerHTML = `${icon(meta.icon)}<span>${escapeHtml(meta.label)}</span>`;
+  banner.innerHTML = `<span class="dot"></span><span>${escapeHtml(meta.label)}</span>`;
   node.querySelector(".result-question").textContent = r.question;
 
   node.querySelector(".notices").innerHTML = (r.notices ?? [])
-    .map((n) => `<div class="notice notice-${escapeHtml(n.level)}">${icon(n.level === "info" ? "info" : "alert")}<p>${escapeHtml(n.message)}</p></div>`)
+    .map((n) => `<div class="notice notice-${escapeHtml(n.level)}"><p>${escapeHtml(n.message)}</p></div>`)
     .join("");
 
   if (r.answer) {
@@ -191,7 +162,7 @@ function renderResult(r) {
     block.hidden = false;
     block.querySelector(".answer-text").textContent = r.answer.text;
     const c = confidenceLabel(r.answer.confidence);
-    block.querySelector(".confidence-label").textContent = `Model confidence: ${c.label} (${c.pct}%)`;
+    block.querySelector(".confidence-label").textContent = `Confidence: ${c.label} (${c.pct}%)`;
     const meter = block.querySelector(".meter");
     meter.setAttribute("aria-valuenow", String(c.pct));
     meter.setAttribute("aria-label", "Answer confidence");
@@ -203,8 +174,8 @@ function renderResult(r) {
     const block = node.querySelector(".evidence-block");
     block.hidden = false;
     block.querySelector(".evidence-list").innerHTML = r.evidence.map((ev, i) => {
-      const score = typeof ev.relevance_score === "number" ? `<span class="score">relevance ${ev.relevance_score.toFixed(2)}</span>` : "";
-      const used = ev.used_for_answer ? '<span class="tag">answer source</span>' : "";
+      const score = typeof ev.relevance_score === "number" ? `<span class="score">${ev.relevance_score.toFixed(2)}</span>` : "";
+      const used = ev.used_for_answer ? '<span class="tag">used for answer</span>' : "";
       return `<li class="evidence${ev.used_for_answer ? " used" : ""}">
         <div class="evidence-head"><span class="ev-num">[${i + 1}]</span><span class="ev-title">${escapeHtml(ev.source_title || ev.source_id)}</span>${used}${score}</div>
         <p>${highlightRange(ev.text, ev.highlight_start, ev.highlight_end)}</p>
