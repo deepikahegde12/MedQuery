@@ -10,6 +10,7 @@ from query_processing.preprocess import PreprocessedQuery, preprocess
 class QueryAnalysis:
     pre: PreprocessedQuery
     encoded: EncodedQuery | None
+    encoding_skipped: bool = False
 
     @property
     def bert_available(self) -> bool:
@@ -23,6 +24,7 @@ class QueryAnalysis:
             "safety_flags": self.pre.safety_flags,
             "bert": {
                 "available": self.bert_available,
+                "used": not self.encoding_skipped,
                 "token_count": self.encoded.token_count if self.encoded else 0,
                 "wordpieces": self.encoded.wordpieces[:64] if self.encoded else [],
                 "truncated": self.encoded.truncated if self.encoded else False,
@@ -35,7 +37,12 @@ class QueryUnderstanding:
     def __init__(self, encoder: BertQueryEncoder):
         self.encoder = encoder
 
-    def analyze(self, question: str) -> QueryAnalysis:
+    def analyze(self, question: str, encode: bool = True) -> QueryAnalysis:
         pre = preprocess(question)
+        # Emergency handling must not wait for a potentially cold model load.
+        if "possible_emergency" in pre.safety_flags:
+            return QueryAnalysis(pre=pre, encoded=None, encoding_skipped=True)
+        if not encode:
+            return QueryAnalysis(pre=pre, encoded=None, encoding_skipped=True)
         # BERT sees the cleaned text with original casing (cased models benefit).
         return QueryAnalysis(pre=pre, encoded=self.encoder.encode(pre.clean_text))

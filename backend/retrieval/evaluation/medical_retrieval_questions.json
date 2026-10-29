@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "dataset_id": "medquery-medical-retrieval-review-v1",
+  "status": "prepared_not_run",
+  "annotation_note": "Expected sources and sufficiency labels are based only on the prepared Markdown summaries. This file contains no generated answers and no retrieval results.",
+  "questions": [
+    {
+      "id": "flu-symptoms",
+      "query": "What symptoms can influenza cause?",
+      "topic": "infectious_diseases.influenza",
+      "relevant_passages": [{"document_id": "medlineplus-flu-summary", "section_heading": "What are the symptoms of the flu?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "cold-care",
+      "query": "When should someone contact a health professional about a cold?",
+      "topic": "infectious_diseases.common_cold",
+      "relevant_passages": [{"document_id": "medlineplus-common-cold-summary", "section_heading": "When should someone contact a health care provider?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "diabetes-symptoms",
+      "query": "What symptoms may occur with diabetes, and can symptoms alone diagnose it?",
+      "topic": "chronic_conditions.diabetes",
+      "relevant_passages": [
+        {"document_id": "medlineplus-diabetes-summary", "section_heading": "What are possible symptoms?"},
+        {"document_id": "medlineplus-diabetes-summary", "section_heading": "How is diabetes diagnosed?"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "Both topics have corpus evidence, but the current response contract returns one extracted span and cannot reliably answer both parts together."
+    },
+    {
+      "id": "blood-pressure-diagnosis",
+      "query": "Can high blood pressure have no symptoms, and how is it diagnosed?",
+      "topic": "cardiovascular.high_blood_pressure",
+      "relevant_passages": [{"document_id": "medlineplus-high-blood-pressure-summary", "section_heading": "How is high blood pressure diagnosed?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks about symptoms and diagnosis, but the response contract provides one extracted span."
+    },
+    {
+      "id": "gerd-chest-pain",
+      "query": "Should chest pain be assumed to be GERD?",
+      "topic": "digestive_health.gerd",
+      "relevant_passages": [{"document_id": "medlineplus-gerd-summary", "section_heading": "When is urgent medical help needed?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "Chest-pain wording invokes the emergency path, which skips ordinary retrieval and answer extraction."
+    },
+    {
+      "id": "medicine-labels",
+      "query": "What should I check on a medicine label, and what should I ask a pharmacist about interactions?",
+      "topic": "medication_safety.labels_and_interactions",
+      "relevant_passages": [
+        {"document_id": "medlineplus-medication-errors-summary", "section_heading": "Reading labels and following instructions"},
+        {"document_id": "medlineplus-medication-errors-summary", "section_heading": "Interactions and questions"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question has two explicit interrogative parts and cannot be answered completely by one extracted span."
+    },
+    {
+      "id": "medicine-personal-dose",
+      "query": "What dose of my prescription should I take with the other medicines I use?",
+      "topic": "medication_safety.individual_dosing",
+      "relevant_passages": [{"document_id": "medlineplus-medication-errors-summary", "section_heading": "Interactions and questions"}],
+      "sufficient_evidence": false,
+      "abstain_expected": true,
+      "reason": "The corpus gives general questions to ask a clinician or pharmacist and does not contain a person's medication list or a dose recommendation."
+    },
+    {
+      "id": "medicine-storage",
+      "query": "What general medicine storage precautions are covered by the corpus?",
+      "topic": "medication_safety.storage",
+      "relevant_passages": [{"document_id": "medlineplus-medication-errors-summary", "section_heading": "Safe storage"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "vaccine-purpose",
+      "query": "How do vaccines help the immune system and the wider community?",
+      "topic": "preventive_health.vaccination",
+      "relevant_passages": [
+        {"document_id": "medlineplus-vaccines-summary", "section_heading": "What are vaccines?"},
+        {"document_id": "medlineplus-vaccines-summary", "section_heading": "How does immunity work?"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "a1c-period",
+      "query": "What time period does an A1C test reflect?",
+      "topic": "diagnostic_tests.diabetes",
+      "relevant_passages": [{"document_id": "medlineplus-a1c-summary", "section_heading": "What is an A1C test?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "sleep-disorders",
+      "query": "What are examples of sleep disorders, and how much sleep do most adults need according to this summary?",
+      "topic": "mental_wellbeing.sleep",
+      "relevant_passages": [
+        {"document_id": "medlineplus-sleep-disorders-summary", "section_heading": "What are sleep disorders?"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks for examples and a separate sleep-duration fact; the response contract provides one extracted span."
+    },
+    {
+      "id": "emergency-warning-signs",
+      "query": "What are some general warning signs that may need immediate emergency assessment?",
+      "topic": "emergency_guidance.general",
+      "relevant_passages": [{"document_id": "medlineplus-emergency-warning-signs-summary", "section_heading": "Warning signs"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false,
+      "scope_note": "The source passage gives examples only; it is not a complete triage protocol."
+    },
+    {
+      "id": "emergency-phone-number",
+      "query": "What exact emergency telephone number should I call in my country?",
+      "topic": "emergency_guidance.local_services",
+      "relevant_passages": [{"document_id": "medlineplus-emergency-warning-signs-summary", "section_heading": "What to do"}],
+      "sufficient_evidence": false,
+      "abstain_expected": true,
+      "reason": "The document directs readers to local services and deliberately does not specify a universal number or a country-specific directory."
+    },
+    {
+      "id": "anxiety-support",
+      "query": "When might someone consider getting professional support for anxiety?",
+      "topic": "mental_wellbeing.anxiety",
+      "relevant_passages": [{"document_id": "medlineplus-anxiety-summary", "section_heading": "Getting support"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "depression-diagnosis",
+      "query": "Can a list of possible depression signs diagnose someone?",
+      "topic": "mental_wellbeing.depression",
+      "relevant_passages": [{"document_id": "medlineplus-depression-summary", "section_heading": "Possible signs"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks both about possible signs and diagnosis; the response contract provides one extracted span."
+    },
+    {
+      "id": "stress-management",
+      "query": "What general approaches does the corpus describe for managing stress?",
+      "topic": "mental_wellbeing.stress",
+      "relevant_passages": [{"document_id": "medlineplus-stress-summary", "section_heading": "General ways people manage stress"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "asthma-overview",
+      "query": "What is asthma, and what kinds of things can trigger symptoms?",
+      "topic": "respiratory_health.asthma",
+      "relevant_passages": [{"document_id": "medlineplus-asthma-summary", "section_heading": "What is asthma?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks for a definition and triggers, which need more than one extracted span."
+    },
+    {
+      "id": "allergy-emergency",
+      "query": "What warning signs of a severe allergic reaction need emergency help?",
+      "topic": "immune_health.allergies",
+      "relevant_passages": [{"document_id": "medlineplus-allergies-encyclopedia-summary", "section_heading": "Severe reactions"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "migraine-triggers",
+      "query": "What symptoms and possible triggers are described for migraine?",
+      "topic": "neurological_health.headache_migraine",
+      "relevant_passages": [{"document_id": "medlineplus-migraine-summary", "section_heading": "Migraine overview"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks about both symptoms and triggers; the response contract provides one extracted span."
+    },
+    {
+      "id": "anemia-assessment",
+      "query": "What symptoms may occur with anemia, and how can it be assessed?",
+      "topic": "blood_health.anemia",
+      "relevant_passages": [{"document_id": "medlineplus-anemia-summary", "section_heading": "Possible symptoms and assessment"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks both about symptoms and assessment; the response contract provides one extracted span."
+    },
+    {
+      "id": "kidney-risk-checks",
+      "query": "Which factors are associated with kidney disease risk, and what tests may a clinician use?",
+      "topic": "kidney_health.disease",
+      "relevant_passages": [{"document_id": "medlineplus-kidney-diseases-summary", "section_heading": "Risk and checks"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks about risk factors and tests; the response contract provides one extracted span."
+    },
+    {
+      "id": "thyroid-overview",
+      "query": "What does the thyroid do, and what broad types of thyroid disorder are mentioned?",
+      "topic": "endocrine_health.thyroid",
+      "relevant_passages": [{"document_id": "medlineplus-thyroid-diseases-summary", "section_heading": "Thyroid overview"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "arthritis-types",
+      "query": "How does the summary distinguish osteoarthritis from rheumatoid arthritis?",
+      "topic": "musculoskeletal_health.arthritis",
+      "relevant_passages": [{"document_id": "medlineplus-arthritis-summary", "section_heading": "What is arthritis?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question requests a comparison, which the single-span response contract does not synthesize."
+    },
+    {
+      "id": "bowel-warning-signs",
+      "query": "What risks and warning signs does the summary mention for diarrhea?",
+      "topic": "digestive_health.bowel_changes",
+      "relevant_passages": [{"document_id": "medlineplus-diarrhea-constipation-summary", "section_heading": "Diarrhea"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "pneumonia-symptoms",
+      "query": "What symptoms can pneumonia cause, including in some older adults?",
+      "topic": "respiratory_health.pneumonia",
+      "relevant_passages": [{"document_id": "medlineplus-pneumonia-summary", "section_heading": "What is pneumonia?"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "common-skin-conditions",
+      "query": "What are examples of common skin conditions, and when does the summary suggest seeking professional assessment?",
+      "topic": "skin_health.common_conditions",
+      "relevant_passages": [
+        {"document_id": "medlineplus-skin-conditions-summary", "section_heading": "Examples"},
+        {"document_id": "medlineplus-skin-conditions-summary", "section_heading": "General skin care and assessment"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks for examples and a separate assessment condition; the response contract provides one extracted span."
+    },
+    {
+      "id": "screening-overview",
+      "query": "What are examples of screening checks, and who should decide which ones apply to me?",
+      "topic": "preventive_health.screening",
+      "relevant_passages": [
+        {"document_id": "medlineplus-preventive-screening-summary", "section_heading": "What screening means"},
+        {"document_id": "medlineplus-preventive-screening-summary", "section_heading": "Choosing checks"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The question asks for screening examples and who should select them; the response contract provides one extracted span."
+    },
+    {
+      "id": "screening-personal-interval",
+      "query": "How often exactly should I personally have cholesterol screening?",
+      "topic": "preventive_health.screening",
+      "relevant_passages": [{"document_id": "medlineplus-preventive-screening-summary", "section_heading": "Choosing checks"}],
+      "sufficient_evidence": false,
+      "abstain_expected": true,
+      "reason": "The summary says timing depends on individual factors and local guidance but does not provide a personal interval."
+    },
+    {
+      "id": "hand-hygiene-times",
+      "query": "At what everyday times does the guidance recommend cleaning hands?",
+      "topic": "preventive_health.infection_prevention",
+      "relevant_passages": [{"document_id": "who-unicef-community-hand-hygiene-summary", "section_heading": "Hand hygiene"}],
+      "sufficient_evidence": true,
+      "abstain_expected": false
+    },
+    {
+      "id": "flu-cold-comparison",
+      "query": "How do flu and common cold symptoms differ?",
+      "topic": "infectious_diseases.comparison",
+      "relevant_passages": [
+        {"document_id": "medlineplus-flu-summary", "section_heading": "What are the symptoms of the flu?"},
+        {"document_id": "medlineplus-common-cold-summary", "section_heading": "What are the symptoms of the common cold?"}
+      ],
+      "sufficient_evidence": true,
+      "abstain_expected": true,
+      "reason": "The corpus contains separate symptom summaries, but this single-span answer interface does not synthesize comparisons."
+    }
+  ]
+}

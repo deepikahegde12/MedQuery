@@ -28,9 +28,15 @@ class Services:
 def build_services(settings: Settings) -> Services:
     encoder = BertQueryEncoder(settings.query_model_name, settings.query_max_tokens, settings.hf_offline)
     retrieval = RetrievalService(
-        load_retriever(settings.kb_adapter, settings.kb_connection),
+        load_retriever(
+            settings.kb_adapter,
+            settings.kb_connection,
+            allow_model_download=settings.kb_allow_model_download,
+            hybrid_enabled=settings.kb_hybrid_retrieval,
+        ),
         timeout_seconds=settings.kb_timeout_seconds,
         min_relevance=settings.kb_min_relevance,
+        default_top_k=settings.kb_top_k,
     )
     if settings.answer_mode == "extractive":
         generator: AnswerGenerator = ExtractiveQAGenerator(

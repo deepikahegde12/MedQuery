@@ -8,6 +8,7 @@ from query_processing.preprocess import (
     normalize,
     preprocess,
 )
+from query_processing.medical_terms import expand_medical_terms
 
 
 def test_clean_collapses_whitespace_and_control_chars():
@@ -47,6 +48,7 @@ def test_classify_question(text, expected):
 def test_safety_flags():
     assert detect_safety_flags("i have chest pain right now") == ["possible_emergency"]
     assert detect_safety_flags("should i take two tablets") == ["personal_medical_advice"]
+    assert detect_safety_flags("can i take ibuprofen with warfarin") == ["personal_medical_advice"]
     assert detect_safety_flags("what is term x") == []
 
 
@@ -57,3 +59,26 @@ def test_preprocess_end_to_end():
     assert q.keywords == ["treatment", "term-x"]
     assert q.question_type == "treatment"
     assert q.safety_flags == []
+
+
+@pytest.mark.parametrize(
+    "question,alias",
+    [
+        ("What are common symptoms of influenza?", "flu"),
+        ("What does hypertension mean?", "high blood pressure"),
+        ("What does hyperglycemia mean?", "high blood sugar"),
+        ("What is GERD?", "gastroesophageal reflux disease"),
+        ("What does an A1C test measure?", "hemoglobin a1c"),
+    ],
+)
+def test_medical_query_expansion_is_limited_and_preserves_original(question, alias):
+    variants = expand_medical_terms(question)
+    assert variants[0] == normalize(question)
+    assert len(variants) == (1 if alias is None else 2)
+    if alias:
+        assert alias in variants[1]
+    assert preprocess(question).original_text == question
+
+
+def test_medical_query_expansion_does_not_infer_related_conditions():
+    assert expand_medical_terms("What causes diabetes?") == ["what causes diabetes?"]

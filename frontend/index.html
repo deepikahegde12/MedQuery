@@ -73,7 +73,7 @@
         <li><strong>Preprocess.</strong> The question is normalised, keywords are extracted, and its type is detected.</li>
         <li><strong>Encode.</strong> A pretrained BERT model turns the question into an embedding for semantic search.</li>
         <li><strong>Retrieve.</strong> An adapter queries the knowledge base and returns ranked passages with their sources.</li>
-        <li><strong>Extract.</strong> A BERT reading-comprehension model picks an answer span from those passages, with a confidence score.</li>
+        <li><strong>Extract.</strong> A BERT reading-comprehension model picks an answer span from those passages. Its displayed score is uncalibrated and does not indicate medical correctness.</li>
       </ol>
       <p class="muted">BERT is used to understand questions and locate answers, not as a source of medical knowledge.</p>
     </section>

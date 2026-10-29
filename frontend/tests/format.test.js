@@ -29,7 +29,7 @@ test("highlightRange ignores invalid ranges", () => {
 });
 
 test("statusMeta maps every backend status and tolerates unknown ones", () => {
-  for (const s of ["ANSWERED", "LOW_CONFIDENCE", "EVIDENCE_ONLY", "NO_ANSWER_IN_EVIDENCE", "NO_EVIDENCE", "KB_NOT_CONFIGURED", "RETRIEVAL_FAILED"]) {
+  for (const s of ["ANSWERED", "LOW_CONFIDENCE", "EVIDENCE_ONLY", "NO_ANSWER_IN_EVIDENCE", "NO_EVIDENCE", "KB_NOT_CONFIGURED", "RETRIEVAL_FAILED", "EMERGENCY_GUIDANCE"]) {
     assert.ok(statusMeta(s).label);
   }
   assert.equal(statusMeta("KB_NOT_CONFIGURED").tone, "neutral");

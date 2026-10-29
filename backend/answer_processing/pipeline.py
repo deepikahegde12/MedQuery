@@ -1,6 +1,6 @@
 """End-to-end question pipeline:
 
-    question -> preprocessing + BERT encoding -> knowledge retrieval
+    question -> preprocessing + optional BERT encoding -> knowledge retrieval
              -> evidence gate -> answer generation -> QueryResult
 
 The evidence gate is the key safety property: if retrieval did not return
@@ -23,7 +23,8 @@ from answer_processing.models import (
     SourceRef,
 )
 from query_processing.understanding import QueryUnderstanding
-from retrieval.base import RetrievalQuery, RetrievalStatus
+from query_processing.medical_terms import expand_medical_terms
+from retrieval.base import RetrievalQuery, RetrievalResult, RetrievalStatus
 from retrieval.service import RetrievalService
 
 logger = logging.getLogger(__name__)
@@ -57,11 +58,11 @@ _STATUS_NOTICES = {
     ),
     AnswerStatus.LOW_CONFIDENCE: Notice(
         level="warning", code="low_confidence",
-        message="The extracted answer has low confidence. Read the supporting evidence carefully.",
+        message="The answer span has a low QA model score. That score does not measure medical correctness; read the supporting evidence carefully.",
     ),
     AnswerStatus.NO_ANSWER_IN_EVIDENCE: Notice(
         level="info", code="no_answer_in_evidence",
-        message="Related passages were found, but none appears to directly answer the question.",
+        message="The retrieved passages did not support one clear answer. Review the cited evidence and ask a qualified healthcare professional if needed.",
     ),
     AnswerStatus.EVIDENCE_ONLY: Notice(
         level="info", code="evidence_only",
@@ -102,29 +103,51 @@ class AnswerPipeline:
         timings: dict[str, float] = {}
         t0 = time.perf_counter()
 
-        analysis = self.understanding.analyze(question)
+        analysis = self.understanding.analyze(
+            question, encode=self.retrieval.requires_query_embedding,
+        )
         timings["understanding"] = _ms(t0)
 
+        emergency = "possible_emergency" in analysis.pre.safety_flags
         t1 = time.perf_counter()
-        retrieval = self.retrieval.retrieve(
-            RetrievalQuery(
+        if emergency:
+            retrieval = RetrievalResult(
+                status=RetrievalStatus.SKIPPED_SAFETY,
+                message="Ordinary evidence retrieval was skipped because the question may describe an emergency.",
+                adapter="skipped_for_safety",
+            )
+        else:
+            retrieval = self.retrieval.retrieve(RetrievalQuery(
                 original_text=analysis.pre.clean_text,
                 normalized_text=analysis.pre.normalized_text,
                 keywords=analysis.pre.keywords,
+                query_variants=expand_medical_terms(analysis.pre.clean_text),
                 question_type=analysis.pre.question_type,
                 embedding=analysis.encoded.embedding if analysis.encoded else None,
                 top_k=self.top_k,
-            )
-        )
+            ))
         timings["retrieval"] = _ms(t1)
+        # A zero duration means answer generation was correctly skipped by the
+        # evidence gate (for example, no results or an emergency request).
+        timings["answer"] = 0.0
 
         evidence = [Evidence(**p.model_dump()) for p in retrieval.passages]
         answer: Answer | None = None
+        personal_advice = "personal_medical_advice" in analysis.pre.safety_flags
 
         # --- Evidence gate -------------------------------------------------
-        if retrieval.status != RetrievalStatus.OK or not evidence:
+        if emergency:
+            status = AnswerStatus.EMERGENCY_GUIDANCE
+            evidence = []
+        elif retrieval.status != RetrievalStatus.OK or not evidence:
             status = _RETRIEVAL_TO_ANSWER_STATUS.get(retrieval.status, AnswerStatus.NO_EVIDENCE)
             evidence = []
+        elif personal_advice:
+            # Keep general retrieved information visible, but never turn it into
+            # an individualized recommendation or interpretation.
+            status = AnswerStatus.EVIDENCE_ONLY
+        elif not self.generator.supports_question(analysis.pre.clean_text):
+            status = AnswerStatus.NO_ANSWER_IN_EVIDENCE
         else:
             t2 = time.perf_counter()
             generated = None
@@ -158,12 +181,13 @@ class AnswerPipeline:
         notices = [_SAFETY_NOTICES[f] for f in analysis.pre.safety_flags if f in _SAFETY_NOTICES]
         if status in _STATUS_NOTICES:
             notices.append(_STATUS_NOTICES[status])
-        if not analysis.bert_available:
+        if not analysis.bert_available and not analysis.encoding_skipped and not emergency:
             notices.append(Notice(
                 level="info", code="bert_unavailable",
                 message="The BERT query encoder is unavailable; keyword-based query processing was used.",
             ))
-        if status == AnswerStatus.EVIDENCE_ONLY and self.generator.name != "evidence_only":
+        if (status == AnswerStatus.EVIDENCE_ONLY and self.generator.name != "evidence_only"
+                and not personal_advice):
             notices.append(Notice(
                 level="info", code="qa_model_unavailable",
                 message="The answer-extraction model is unavailable, so only evidence is shown.",

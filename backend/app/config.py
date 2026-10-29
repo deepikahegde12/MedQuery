@@ -8,6 +8,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
@@ -43,13 +44,17 @@ class Settings(BaseSettings):
     # --- Knowledge retrieval (YOUR knowledge base plugs in here) -------------
     # Import path "package.module:ClassName" of a class implementing
     # retrieval.base.Retriever. Empty -> NotConfiguredRetriever.
-    kb_adapter: str = ""
+    kb_adapter: str = "retrieval.adapters.faiss_adapter:FaissRetriever"
     # Free-form connection string handed to your adapter (file path, DB URL, ...).
-    kb_connection: str = ""
+    kb_connection: str = str(BACKEND_DIR / "data" / "medical_kb")
+    # The FAISS adapter uses cached embedding weights unless this is explicitly enabled.
+    kb_allow_model_download: bool = False
+    kb_hybrid_retrieval: bool = True
     kb_top_k: int = 5
     kb_timeout_seconds: float = 10.0
     # Passages scoring below this are discarded as not relevant enough.
-    kb_min_relevance: float = 0.0
+    # Initial conservative cosine-derived floor; calibrate on labeled retrieval data.
+    kb_min_relevance: float = Field(default=0.65, ge=0.0, le=1.0)
 
     # --- Answer processing ----------------------------------------------------
     # "extractive": BERT reading-comprehension model selects an answer span.

@@ -1,6 +1,6 @@
 import time
 
-from tests.doubles import StaticRetriever, make_passages
+from tests.doubles import FakeEncoder, StaticRetriever, make_passages, make_pipeline
 from retrieval.base import Passage, RetrievalQuery, RetrievalResult, RetrievalStatus, Retriever
 from retrieval.not_configured import NotConfiguredRetriever
 from retrieval.service import RetrievalService, load_retriever
@@ -84,6 +84,52 @@ def test_min_relevance_filters_sorts_and_limits():
                            min_relevance=0.3)
     result = svc.retrieve(QUERY.model_copy(update={"top_k": 1}))
     assert [p.source_id for p in result.passages] == ["b"]
+
+
+def test_hybrid_fusion_order_is_preserved_after_relevance_filtering():
+    passages = [
+        Passage(text="semantic first", source_id="a", relevance_score=0.95,
+                metadata={"rank_fusion_score": 0.02}),
+        Passage(text="hybrid first", source_id="b", relevance_score=0.78,
+                metadata={"rank_fusion_score": 0.03}),
+    ]
+    result = RetrievalService(
+        StaticRetriever(RetrievalResult(status=RetrievalStatus.OK, passages=passages)),
+        min_relevance=0.65,
+    ).retrieve(QUERY)
+    assert [p.source_id for p in result.passages] == ["b", "a"]
+
+
+def test_duplicate_overlap_is_removed_only_within_same_source_and_section():
+    shared = "## Symptoms\n\nRepeated evidence paragraph."
+    passages = [
+        Passage(text=shared, source_id="same", relevance_score=0.9,
+                metadata={"section_heading": "Symptoms"}),
+        Passage(text=shared + " Further distinct context.", source_id="same", relevance_score=0.8,
+                metadata={"section_heading": "Symptoms"}),
+        Passage(text=shared, source_id="other", relevance_score=0.8,
+                metadata={"section_heading": "Symptoms"}),
+    ]
+    result = RetrievalService(StaticRetriever(
+        RetrievalResult(status=RetrievalStatus.OK, passages=passages),
+    )).retrieve(QUERY)
+    assert [p.source_id for p in result.passages] == ["same", "other"]
+    assert "Further distinct context" in result.passages[0].text
+
+
+def test_faiss_style_retriever_skips_unused_bert_vector_but_keeps_query_aliases():
+    class SentenceEmbeddingRetriever(StaticRetriever):
+        requires_query_embedding = False
+
+    encoder = FakeEncoder()
+    retriever = SentenceEmbeddingRetriever(RetrievalResult(status=RetrievalStatus.OK, passages=make_passages()))
+    make_pipeline(retriever=retriever, encoder=encoder).run("What symptoms can influenza cause?")
+    assert encoder.calls == []
+    assert retriever.queries[0].embedding is None
+    assert retriever.queries[0].query_variants == [
+        "what symptoms can influenza cause?",
+        "what symptoms can influenza cause? flu",
+    ]
 
 
 def test_all_filtered_becomes_no_results():

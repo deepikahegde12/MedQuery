@@ -12,8 +12,9 @@ Rules every adapter must follow:
   * Use `RetrievalStatus.NO_RESULTS` (with an empty list) when nothing matched.
   * Raise an exception or return `RetrievalStatus.ERROR` on failure; never
     fabricate passages or sources.
-  * `relevance_score` should be "higher is more relevant"; normalising it to
-    0..1 lets `MEDQUERY_KB_MIN_RELEVANCE` filter meaningfully.
+  * `relevance_score` should be "higher is more relevant". A normalized 0..1
+    ranking score is not necessarily calibrated; thresholds are adapter-specific
+    and should be reviewed against labeled retrieval data.
 """
 
 from abc import ABC, abstractmethod
@@ -27,6 +28,7 @@ class RetrievalStatus(str, Enum):
     OK = "OK"
     NO_RESULTS = "NO_RESULTS"
     NOT_CONFIGURED = "NOT_CONFIGURED"
+    SKIPPED_SAFETY = "SKIPPED_SAFETY"
     TIMEOUT = "TIMEOUT"
     ERROR = "ERROR"
 
@@ -35,6 +37,8 @@ class RetrievalQuery(BaseModel):
     original_text: str
     normalized_text: str
     keywords: list[str] = Field(default_factory=list)
+    # Conservative aliases for corpus terms; original_text remains untouched.
+    query_variants: list[str] = Field(default_factory=list)
     question_type: str = "general"
     # Mean-pooled BERT embedding of the question; None if the encoder is unavailable.
     embedding: list[float] | None = None
@@ -62,6 +66,9 @@ class Retriever(ABC):
 
     #: Human-readable adapter name, reported by /api/health and in responses.
     name: str = "retriever"
+    # Adapters using their own embedding model should opt out of the separate
+    # BERT query vector, which would otherwise be computed but never consumed.
+    requires_query_embedding: bool = True
 
     def __init__(self, connection: str = "", **options: Any) -> None:
         self.connection = connection

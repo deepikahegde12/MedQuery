@@ -37,11 +37,15 @@ STOPWORDS = frozenset(
 # Ordered: the first matching pattern wins.
 _QUESTION_TYPES: list[tuple[str, re.Pattern]] = [
     ("comparison", re.compile(r"\b(difference between|differ|compare|comparison|versus|vs\.?)\b")),
+    ("emergency", re.compile(r"\b(emergency|warning signs?|urgent help|when to seek (?:help|care))\b")),
     ("symptoms", re.compile(r"\b(symptoms?|signs?|feel like|presentation)\b")),
+    ("risk_factors", re.compile(r"\b(risk factors?)\b")),
     ("causes", re.compile(r"\b(causes?|caused|why do|why does|risk factors?|etiology)\b")),
-    ("treatment", re.compile(r"\b(treat|treatment|treated|therapy|cure|manage|management|medication|medicine|drugs?)\b")),
-    ("prevention", re.compile(r"\b(prevent\w*|avoid\w*|reduce the risk)\b")),
+    ("complications", re.compile(r"\b(complications?|long[- ]term effects?)\b")),
+    ("prevention", re.compile(r"\b(prevent\w*|avoid\w*|reduce the risk|lower the risk)\b")),
     ("diagnosis", re.compile(r"\b(diagnos\w*|tests?|detect\w*|screen\w*)\b")),
+    ("medication_safety", re.compile(r"\b(side effects?|interactions?|dos(?:e|age)|medicine labels?|drug labels?|safe storage)\b")),
+    ("treatment", re.compile(r"\b(treat|treatment|treated|therapy|cure|manage|management|medication|medicine|drugs?)\b")),
     ("prognosis", re.compile(r"\b(prognosis|outlook|life expectancy|recover\w*)\b")),
     ("definition", re.compile(r"^(what is|what are|define|meaning of|what does)\b|\bdefinition\b")),
 ]
@@ -52,7 +56,8 @@ _EMERGENCY = re.compile(
     r"self[- ]harm|stroke symptoms|heart attack)\b"
 )
 _PERSONAL_ADVICE = re.compile(
-    r"\b(do i have|should i (take|stop|start|use)|how much .* should i|"
+    r"\b(do i have|(?:can|may) i (take|use|combine|mix|stop|start)|"
+    r"should i (take|stop|start|use)|is it safe for me to (take|use|combine|mix)|how much .* should i|"
     r"what dose .* (me|i)|my (doctor|prescription|dose|dosage)|am i (sick|dying|pregnant))\b"
 )
 

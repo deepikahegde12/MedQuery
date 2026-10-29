@@ -60,14 +60,17 @@ class BertQueryEncoder:
 
         import torch
 
-        batch = tokenizer(
-            text,
-            truncation=True,
-            max_length=self.max_tokens,
+        content_ids = tokenizer(text, add_special_tokens=False)["input_ids"]
+        special_count = tokenizer.num_special_tokens_to_add(pair=False)
+        content_limit = max(0, self.max_tokens - special_count)
+        truncated = len(content_ids) > content_limit
+        ids = tokenizer.build_inputs_with_special_tokens(content_ids[:content_limit])
+        batch = tokenizer.prepare_for_model(
+            ids,
+            add_special_tokens=False,
+            return_attention_mask=True,
             return_tensors="pt",
-            return_overflowing_tokens=False,
         )
-        full_len = len(tokenizer(text, truncation=False)["input_ids"])
         with torch.no_grad():
             hidden = model(**batch).last_hidden_state  # (1, seq, dim)
         mask = batch["attention_mask"].unsqueeze(-1).to(hidden.dtype)
@@ -78,6 +81,6 @@ class BertQueryEncoder:
         return EncodedQuery(
             wordpieces=tokenizer.convert_ids_to_tokens(ids),
             token_count=len(ids),
-            truncated=full_len > len(ids),
+            truncated=truncated,
             embedding=[round(v, 6) for v in pooled[0].tolist()],
         )

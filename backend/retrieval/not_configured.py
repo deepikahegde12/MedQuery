@@ -8,6 +8,7 @@ class NotConfiguredRetriever(Retriever):
     """
 
     name = "not_configured"
+    requires_query_embedding = False
 
     def __init__(self, connection: str = "", reason: str | None = None, **options) -> None:
         super().__init__(connection, **options)

@@ -1,6 +1,5 @@
 import { api } from "./api.js";
 import {
-  confidenceLabel,
   describeError,
   escapeHtml,
   highlightRange,
@@ -161,13 +160,17 @@ function renderResult(r) {
     const block = node.querySelector(".answer-block");
     block.hidden = false;
     block.querySelector(".answer-text").textContent = r.answer.text;
-    const c = confidenceLabel(r.answer.confidence);
-    block.querySelector(".confidence-label").textContent = `Confidence: ${c.label} (${c.pct}%)`;
+    const score = r.answer.confidence;
+    const validScore = Number.isFinite(score) && score >= 0 && score <= 1;
+    const pct = validScore ? Math.round(score * 100) : 0;
+    block.querySelector(".confidence-label").textContent = validScore
+      ? `QA model score (uncalibrated): ${score.toFixed(3)}`
+      : "QA model score unavailable";
     const meter = block.querySelector(".meter");
-    meter.setAttribute("aria-valuenow", String(c.pct));
-    meter.setAttribute("aria-label", "Answer confidence");
-    meter.dataset.level = c.label.toLowerCase();
-    meter.querySelector("span").style.width = `${c.pct}%`;
+    meter.setAttribute("aria-valuenow", String(pct));
+    meter.setAttribute("aria-label", "Uncalibrated extractive QA model score");
+    meter.dataset.level = "model-score";
+    meter.querySelector("span").style.width = `${pct}%`;
   }
 
   if (r.evidence?.length) {
@@ -200,7 +203,7 @@ function renderResult(r) {
     <div><h4>Question type</h4><p>${escapeHtml(a.question_type ?? "—")}</p></div>
     <div><h4>Keywords</h4><p>${(a.keywords ?? []).map((k) => `<span class="kw">${escapeHtml(k)}</span>`).join("") || "—"}</p></div>
     <div><h4>Retrieval</h4><p>${escapeHtml(r.retrieval?.status ?? "—")} · adapter <code>${escapeHtml(r.retrieval?.adapter ?? "—")}</code></p></div>
-    <div><h4>BERT encoder</h4><p>${bert.available ? `${bert.token_count} tokens → ${bert.embedding_dim}-d embedding${bert.truncated ? " (truncated)" : ""}` : "unavailable"}</p></div>
+    <div><h4>BERT encoder</h4><p>${bert.used === false ? "not required for this query" : bert.available ? `${bert.token_count} tokens → ${bert.embedding_dim}-d embedding${bert.truncated ? " (truncated)" : ""}` : "unavailable"}</p></div>
     ${pieces ? `<div class="wide"><h4>WordPiece tokens</h4><p class="wps">${pieces}</p></div>` : ""}`;
 
   const t = r.timings_ms ?? {};

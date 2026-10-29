@@ -129,7 +129,7 @@ test("answered result renders answer, escaped highlighted evidence and safe sour
   $("#askForm").requestSubmit();
   await until(() => $(".answer-block") && !$(".answer-block").hidden);
   assert.equal($(".answer-text").textContent, "ALPHA0");
-  assert.match($(".confidence-label").textContent, /High \(82%\)/);
+  assert.match($(".confidence-label").textContent, /uncalibrated.*0\.820/);
   assert.equal($(".evidence mark").textContent, "ALPHA0");
   assert.equal($(".evidence p b"), null, "evidence HTML must be escaped");
   assert.equal($(".sources-list a"), null, "javascript: URLs must not become links");

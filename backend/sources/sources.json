@@ -1,0 +1,293 @@
+{
+  "schema_version": 2,
+  "documents": {
+    "medlineplus_flu.md": {
+      "document_id": "medlineplus-flu-summary",
+      "status": "ready",
+      "title": "Flu",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/flu.html",
+      "topic": "infectious_diseases.respiratory_infections",
+      "updated_date": "2024-02-28",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Short public-domain summary excerpt transcribed from the official MedlinePlus health-topic summary.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; do not imply endorsement. Review the source before reuse."
+      ,"verification_status": "source_page_verified"
+      ,"content_status": "prepared_summary"
+      ,"ingestion_status": "not_ingested"
+      ,"index_status": "not_indexed"
+    },
+    "infectious_diseases/common_cold.md": {
+      "document_id": "medlineplus-common-cold-summary",
+      "status": "ready",
+      "title": "Common Cold",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/commoncold.html",
+      "topic": "common_symptoms.infectious_diseases.respiratory_illnesses",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpt from the official MedlinePlus Common Cold health-topic summary; warning qualifiers retained.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "chronic_conditions/diabetes.md": {
+      "document_id": "medlineplus-diabetes-summary",
+      "status": "ready",
+      "title": "Diabetes",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/diabetes.html",
+      "topic": "chronic_conditions.diabetes",
+      "updated_date": "2025-02-03",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpts from the official MedlinePlus Diabetes health-topic summary.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "cardiovascular/high_blood_pressure.md": {
+      "document_id": "medlineplus-high-blood-pressure-summary",
+      "status": "ready",
+      "title": "High Blood Pressure",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/highbloodpressure.html",
+      "topic": "cardiovascular.health.high_blood_pressure",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpts from the official MedlinePlus High Blood Pressure health-topic summary.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied. Diagnosis context retained."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "digestive_health/gerd.md": {
+      "document_id": "medlineplus-gerd-summary",
+      "status": "ready",
+      "title": "GERD",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/gerd.html",
+      "topic": "digestive_health.gerd",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpt from the official MedlinePlus GERD health-topic summary; urgent chest-pain warning retained.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "medication_safety/medication_errors.md": {
+      "document_id": "medlineplus-medication-errors-summary",
+      "status": "ready",
+      "title": "Medication Errors",
+      "organization": "National Library of Medicine (MedlinePlus) and U.S. Food and Drug Administration",
+      "source_url": "https://medlineplus.gov/medicationerrors.html",
+      "additional_source_urls": ["https://www.fda.gov/drugs/resources-drugs/drug-interactions-what-you-should-know", "https://www.fda.gov/drugs/information-consumers-and-patients-drugs/think-it-through-managing-benefits-and-risks-medicines", "https://medlineplus.gov/ency/patientinstructions/000534.htm"],
+      "topic": "medication_safety",
+      "updated_date": "2023-03-22",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpt from the official MedlinePlus Medication Errors health-topic summary; no drug monographs or dosing tables included.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "preventive_health/vaccines.md": {
+      "document_id": "medlineplus-vaccines-summary",
+      "status": "ready",
+      "title": "Vaccines",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/vaccines.html",
+      "topic": "preventive_health.vaccination",
+      "updated_date": "2024-08-05",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpts from the official MedlinePlus Vaccines health-topic summary.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; retain the US-specific scope of the source's approval and schedule statements."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "diagnostic_tests/a1c.md": {
+      "document_id": "medlineplus-a1c-summary",
+      "status": "ready",
+      "title": "A1C",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/a1c.html",
+      "topic": "diagnostic_tests.diabetes",
+      "updated_date": "2023-04-06",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpt from the official MedlinePlus A1C health-topic summary; result interpretation qualifiers retained.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; not a substitute for clinician interpretation."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "mental_wellbeing/sleep_disorders.md": {
+      "document_id": "medlineplus-sleep-disorders-summary",
+      "status": "ready",
+      "title": "Sleep Disorders",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/sleepdisorders.html",
+      "topic": "mental_wellbeing.sleep",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Paraphrased excerpts from the official MedlinePlus Sleep Disorders health-topic summary.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "This covers sleep information only; it is not a general mental-health guide. Attribute to MedlinePlus, National Library of Medicine."
+      ,"verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "emergency_guidance/urgent_care.md": {
+      "document_id": "medlineplus-emergency-warning-signs-summary",
+      "status": "ready",
+      "title": "General Emergency Warning Signs and Urgent Care",
+      "organization": "National Library of Medicine (MedlinePlus)",
+      "source_url": "https://medlineplus.gov/ency/article/001927.htm",
+      "topic": "emergency_guidance.general",
+      "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared location-neutral summary paraphrased from the cited MedlinePlus Medical Encyclopedia article; not a comprehensive triage protocol.",
+      "license": "MedlinePlus Medical Encyclopedia content-use terms should be checked separately; this is a concise paraphrase, not a copied article.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine. Source context is U.S.-based; no emergency telephone number is presented as universal.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "emergency_guidance/README.md": {
+      "status": "excluded",
+      "reason": "Folder documentation only; not a medical source summary and must not enter the corpus."
+    },
+    "mental_wellbeing/anxiety.md": {
+      "document_id": "medlineplus-anxiety-summary", "status": "ready", "title": "Anxiety: General Information",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/anxiety.html",
+      "topic": "mental_wellbeing.anxiety", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Anxiety topic; no diagnosis or treatment recommendations added.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "mental_wellbeing/depression.md": {
+      "document_id": "medlineplus-depression-summary", "status": "ready", "title": "Depression: General Information",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/depression.html",
+      "topic": "mental_wellbeing.depression", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Depression topic; no diagnosis or treatment recommendations added.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; local crisis resources are not specified.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "mental_wellbeing/stress_management.md": {
+      "document_id": "medlineplus-stress-summary", "status": "ready", "title": "Stress and Wellbeing",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/stress.html",
+      "topic": "mental_wellbeing.stress", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Stress topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "respiratory_health/asthma.md": {
+      "document_id": "medlineplus-asthma-summary", "status": "ready", "title": "Asthma",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/asthma.html",
+      "topic": "respiratory_health.asthma", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Asthma topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "allergies/allergies.md": {
+      "document_id": "medlineplus-allergies-encyclopedia-summary", "status": "ready", "title": "Allergies",
+      "organization": "National Library of Medicine (MedlinePlus Medical Encyclopedia)", "source_url": "https://medlineplus.gov/ency/article/000812.htm",
+      "topic": "immune_health.allergies", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the MedlinePlus Medical Encyclopedia article.",
+      "license": "Concise paraphrase; encyclopedia-specific reuse terms should be checked before broader redistribution.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; source includes U.S.-specific emergency references.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "neurological_health/headache_migraine.md": {
+      "document_id": "medlineplus-migraine-summary", "status": "ready", "title": "Headache and Migraine",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/migraine.html",
+      "additional_source_urls": ["https://medlineplus.gov/headache.html"],
+      "topic": "neurological_health.headache_migraine", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Migraine topic with general urgent-care caveat.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no diagnosis or medicine recommendations.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "blood_health/anemia.md": {
+      "document_id": "medlineplus-anemia-summary", "status": "ready", "title": "Anemia",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/anemia.html",
+      "topic": "blood_health.anemia", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Anemia topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no supplement or treatment recommendations.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "kidney_health/kidney_diseases.md": {
+      "document_id": "medlineplus-kidney-diseases-summary", "status": "ready", "title": "Kidney Health and Kidney Diseases",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/kidneydiseases.html",
+      "topic": "kidney_health.disease", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Kidney Diseases topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no individualized risk assessment.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "endocrine_health/thyroid_disorders.md": {
+      "document_id": "medlineplus-thyroid-diseases-summary", "status": "ready", "title": "Thyroid Disorders",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/thyroiddiseases.html",
+      "topic": "endocrine_health.thyroid", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Thyroid Diseases topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no diagnosis or treatment recommendations.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "musculoskeletal_health/arthritis.md": {
+      "document_id": "medlineplus-arthritis-summary", "status": "ready", "title": "Arthritis",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/arthritis.html",
+      "topic": "musculoskeletal_health.arthritis", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Arthritis topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no endorsement implied.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "digestive_health/diarrhea_constipation.md": {
+      "document_id": "medlineplus-diarrhea-constipation-summary", "status": "ready", "title": "Diarrhea and Constipation",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/diarrhea.html",
+      "additional_source_urls": ["https://medlineplus.gov/constipation.html"],
+      "topic": "digestive_health.bowel_changes", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary drawing on two official MedlinePlus health topics.",
+      "license": "Public-domain health-topic summaries under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; two source URLs are provided.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "respiratory_health/pneumonia.md": {
+      "document_id": "medlineplus-pneumonia-summary", "status": "ready", "title": "Pneumonia",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/pneumonia.html",
+      "topic": "respiratory_health.pneumonia", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Pneumonia topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; no diagnosis or treatment recommendations.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "skin_health/common_skin_conditions.md": {
+      "document_id": "medlineplus-skin-conditions-summary", "status": "ready", "title": "Common Skin Conditions",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/skinconditions.html",
+      "topic": "skin_health.common_conditions", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary of the official MedlinePlus Skin Conditions topic.",
+      "license": "Public-domain health-topic summary under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine; not a rash identification guide.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "preventive_health/health_screening.md": {
+      "document_id": "medlineplus-preventive-screening-summary", "status": "ready", "title": "Preventive Health Checks and Screening",
+      "organization": "National Library of Medicine (MedlinePlus)", "source_url": "https://medlineplus.gov/healthscreening.html",
+      "additional_source_urls": ["https://medlineplus.gov/lab-tests/measuring-blood-pressure/", "https://medlineplus.gov/lab-tests/diabetes-tests/", "https://medlineplus.gov/lab-tests/cholesterol-levels/"],
+      "topic": "preventive_health.screening", "retrieved_at": "2026-10-28",
+      "content_provenance": "Prepared paraphrased summary combining four MedlinePlus screening and test references.",
+      "license": "Public-domain health-topic and medical-test summaries under MedlinePlus content-use guidance.",
+      "usage_notes": "Attribute to MedlinePlus, National Library of Medicine. Screening schedules vary by individual and location.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    },
+    "preventive_health/infection_prevention_hygiene.md": {
+      "document_id": "who-unicef-community-hand-hygiene-summary", "status": "ready", "title": "Infection Prevention and Hand Hygiene",
+      "organization": "World Health Organization and UNICEF", "source_url": "https://www.who.int/news/item/15-10-2025-new-guidelines-on-community-hand-hygiene-to-help-governments-reduce-the-spread-of-infectious-diseases",
+      "topic": "preventive_health.infection_prevention", "retrieved_at": "2026-10-28", "publication_date": "2025-10-15",
+      "content_provenance": "Prepared paraphrased summary of WHO/UNICEF community hand-hygiene guideline recommendations.",
+      "license": "WHO guideline licensed CC BY-NC-SA 3.0 IGO; summary is paraphrased and attributed. Review full license terms for reuse.",
+      "usage_notes": "Credit WHO and UNICEF and link the source; adaptations of licensed material require compliance with CC BY-NC-SA 3.0 IGO.",
+      "verification_status": "source_page_verified", "content_status": "prepared_summary", "ingestion_status": "not_ingested", "index_status": "not_indexed"
+    }
+  },
+  "pending_topics": [
+    {
+      "topic": "mental_wellbeing.general",
+      "status": "pending",
+      "reason": "Anxiety, depression, stress, and sleep summaries are included, but broader wellbeing and locally verified crisis-support directory information remain outside this collection."
+    }
+  ]
+}

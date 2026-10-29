@@ -2,12 +2,13 @@
 
 export const STATUS_META = {
   ANSWERED: { tone: "success", label: "Answer found in evidence", icon: "check" },
-  LOW_CONFIDENCE: { tone: "warning", label: "Low-confidence answer", icon: "alert" },
+  LOW_CONFIDENCE: { tone: "warning", label: "Low QA model score", icon: "alert" },
   EVIDENCE_ONLY: { tone: "info", label: "Evidence retrieved", icon: "book" },
   NO_ANSWER_IN_EVIDENCE: { tone: "info", label: "No direct answer in evidence", icon: "book" },
   NO_EVIDENCE: { tone: "neutral", label: "No relevant evidence found", icon: "search" },
   KB_NOT_CONFIGURED: { tone: "neutral", label: "Knowledge base not connected", icon: "plug" },
   RETRIEVAL_FAILED: { tone: "danger", label: "Retrieval failed", icon: "alert" },
+  EMERGENCY_GUIDANCE: { tone: "danger", label: "Seek emergency help", icon: "alert" },
 };
 
 export function statusMeta(status) {

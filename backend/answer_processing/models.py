@@ -17,6 +17,7 @@ class AnswerStatus(str, Enum):
     NO_EVIDENCE = "NO_EVIDENCE"            # knowledge base returned nothing relevant
     KB_NOT_CONFIGURED = "KB_NOT_CONFIGURED"
     RETRIEVAL_FAILED = "RETRIEVAL_FAILED"  # timeout or adapter error
+    EMERGENCY_GUIDANCE = "EMERGENCY_GUIDANCE"
 
 
 class Answer(BaseModel):

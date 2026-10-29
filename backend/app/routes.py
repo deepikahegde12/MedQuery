@@ -26,6 +26,8 @@ def health(request: Request):
                 "configured": s.retrieval.is_configured,
                 "adapter": s.retrieval.retriever.name,
                 "status": "CONFIGURED" if s.retrieval.is_configured else "NOT_CONFIGURED",
+                "message": s.retrieval.unavailable_reason,
+                "embedding_model_loaded": s.retrieval.embedding_model_loaded,
             },
             "answer_generator": s.generator.status(),
         },

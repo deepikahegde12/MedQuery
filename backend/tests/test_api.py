@@ -11,7 +11,13 @@ def test_health(client):
     body = r.json()
     assert body["success"] is True
     kb = body["data"]["components"]["knowledge_base"]
-    assert kb == {"configured": False, "adapter": "not_configured", "status": "NOT_CONFIGURED"}
+    assert kb == {
+        "configured": False,
+        "adapter": "not_configured",
+        "status": "NOT_CONFIGURED",
+        "message": "No medical knowledge base is connected. Set MEDQUERY_KB_ADAPTER to enable evidence retrieval.",
+        "embedding_model_loaded": None,
+    }
 
 
 def test_query_without_knowledge_base(client):
@@ -25,12 +31,34 @@ def test_query_without_knowledge_base(client):
     assert data["analysis"]["question_type"] == "definition"
 
 
+def test_emergency_query_skips_retrieval_and_answer_generation():
+    from tests.doubles import FakeEncoder, FakeGenerator
+    from retrieval.base import RetrievalStatus
+
+    retriever = ok_retriever()
+    generator = FakeGenerator()
+    encoder = FakeEncoder()
+    with make_client(retriever=retriever, generator=generator, encoder=encoder) as c:
+        data = c.post("/api/query", json={"question": "I have chest pain right now"}).json()["data"]
+    assert data["status"] == "EMERGENCY_GUIDANCE"
+    assert data["answer"] is None and data["evidence"] == []
+    assert data["retrieval"]["status"] == RetrievalStatus.SKIPPED_SAFETY.value
+    assert retriever.queries == []
+    assert encoder.calls == []
+    assert generator.calls == 0
+    assert {"understanding", "retrieval", "answer", "total"} <= set(data["timings_ms"])
+    assert data["timings_ms"]["answer"] == 0.0
+    assert any(n["code"] == "possible_emergency" for n in data["notices"])
+
+
 def test_query_with_evidence_and_persistence():
     gen = FakeGenerator(GeneratedAnswer(text="ALPHA0", confidence=0.9, passage_index=0, start=40, end=46))
     with make_client(retriever=ok_retriever(), generator=gen) as c:
         data = c.post("/api/query", json={"question": "what is the answer token"}).json()["data"]
         assert data["status"] == "ANSWERED"
         assert data["answer"]["text"] == "ALPHA0"
+        assert data["sources"][0]["url"] == "https://example.test/doc/0"
+        assert data["evidence"][0]["source_title"] == "Test Document 0"
 
         fetched = c.get(f"/api/query/{data['id']}").json()["data"]
         assert fetched["id"] == data["id"] and fetched["answer"]["text"] == "ALPHA0"
@@ -40,6 +68,17 @@ def test_query_with_evidence_and_persistence():
 
         assert c.delete("/api/history").json()["data"]["deleted"] == 1
         assert c.get("/api/history").json()["data"] == []
+
+
+def test_personal_medication_query_keeps_evidence_but_skips_answer_extraction():
+    gen = FakeGenerator(GeneratedAnswer(text="ALPHA0", confidence=0.99, passage_index=0))
+    with make_client(retriever=ok_retriever(), generator=gen) as c:
+        data = c.post("/api/query", json={"question": "Can I take ibuprofen with warfarin?"}).json()["data"]
+    assert data["answer"] is None
+    assert data["status"] == "EVIDENCE_ONLY"
+    assert data["evidence"] and data["sources"]
+    assert gen.calls == 0
+    assert any(notice["code"] == "personal_medical_advice" for notice in data["notices"])
 
 
 @pytest.mark.parametrize(

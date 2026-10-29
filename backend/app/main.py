@@ -34,7 +34,8 @@ def create_app(settings: Settings | None = None, services: Services | None = Non
         app.state.services = services or build_services(settings)
         svc = app.state.services
         if settings.preload_models:
-            svc.encoder.model.warm_up_in_background()
+            if svc.retrieval.requires_query_embedding:
+                svc.encoder.model.warm_up_in_background()
             if hasattr(svc.generator, "model"):
                 svc.generator.model.warm_up_in_background()
         logger.info("MedQuery started (knowledge base configured: %s)", svc.retrieval.is_configured)
